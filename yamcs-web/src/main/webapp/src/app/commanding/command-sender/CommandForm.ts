@@ -267,7 +267,7 @@ export class CommandForm implements OnChanges {
   }
 
   private addAggregateControl(argument: Argument, template?: CommandHistoryEntry) {
-    this.addMemberControls(argument.name + '.', argument.type.member || []);
+    this.addMemberControls(argument.name, argument.type.member || []);
 
     // let initialValueJSON = argument.initialValue;
     if (template) {
