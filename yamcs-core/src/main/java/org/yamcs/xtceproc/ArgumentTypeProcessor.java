@@ -324,6 +324,9 @@ public class ArgumentTypeProcessor {
             boolean found = false;
             String v = (String) o;
 
+	    //Enumerated values that are inside of Aggregate types are surrounded by double quotes, let's remove them.
+	    v =  v.replace("\"", "");
+
             for (ValueEnumeration ve : vlist) {
                 if (ve.getLabel().equals(v)) {
                     found = true;
