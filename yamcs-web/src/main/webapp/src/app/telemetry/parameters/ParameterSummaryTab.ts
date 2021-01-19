@@ -21,11 +21,13 @@ export class ParameterSummaryTab implements OnDestroy {
     // the component. Therefore subscribe to routeParams
     route.parent!.paramMap.subscribe(params => {
       const qualifiedName = params.get('qualifiedName')!;
+	   console.log("param:", params);
       this.changeParameter(qualifiedName);
     });
   }
 
   changeParameter(qualifiedName: string) {
+	console.log("qualifiedName:" + qualifiedName);
     this.yamcs.yamcsClient.getParameter(this.yamcs.instance!, qualifiedName).then(parameter => {
       this.parameter$.next(parameter);
 

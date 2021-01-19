@@ -862,9 +862,11 @@ public class MdbApi extends AbstractMdbApi<Context> {
         int aggSep = AggregateUtil.findSeparator(pathName);
 
         PathElement[] aggPath = null;
+        System.out.println("pathName:" + pathName);
         String nwa = pathName; // name without the aggregate part
         if (aggSep >= 0) {
             nwa = pathName.substring(0, aggSep);
+            System.out.println("nwa:" + nwa);
             try {
                 aggPath = AggregateUtil.parseReference(pathName.substring(aggSep));
             } catch (IllegalArgumentException e) {
@@ -884,10 +886,14 @@ public class MdbApi extends AbstractMdbApi<Context> {
 
         // First try with a prefixed slash (should be the common case)
         String namespace = "/" + _namespace;
+        System.out.println("namespace:"+ namespace);
+        System.out.println("name:"+ name);
         Parameter p = mdb.getParameter(namespace, name);
+        System.out.println("#1\n");
         if (p == null) {
             namespace = _namespace;
             // Maybe some non-xtce namespace like MDB:OPS Name
+            System.out.println("#2\n");
             p = mdb.getParameter(namespace, name);
         }
 

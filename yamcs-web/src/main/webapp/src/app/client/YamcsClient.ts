@@ -841,7 +841,17 @@ export default class YamcsClient implements HttpHandler {
   }
 
   async getParameter(instance: string, qualifiedName: string) {
-    const url = `${this.apiUrl}/mdb/${instance}/parameters${qualifiedName}`;
+	if('/cfs/cfe_es/CFE_ES_OneAppTlm_t.AppInfo' == qualifiedName )
+	{
+		qualifiedName = '/cfs/cfe_es/CFE_ES_OneAppTlm_t.Payload.AppInfo'; 
+	}
+    var url = `${this.apiUrl}/mdb/${instance}/parameters${qualifiedName}`;
+	console.log("url:"+ url);
+	//if ('/api/mdb/yamcs-cfs/parameters/cfs/cfe_es/CFE_ES_OneAppTlm_t.AppInfo' == url)
+//	{
+	//	url = '/api/mdb/yamcs-cfs/parameters/cfs/cfe_es/CFE_ES_OneAppTlm_t.Payload.AppInfo';
+	//} 
+	console.log("url2:"+ url);
     const response = await this.doFetch(url);
     return await response.json() as Parameter;
   }
