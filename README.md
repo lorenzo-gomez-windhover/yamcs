@@ -46,6 +46,34 @@ This configuration stores data to `/storage/yamcs-data`. Ensure this folder exis
 
 When Yamcs started successfully, you can visit the built-in web interface by navigating to `http://localhost:8090`.
 
+## Packaging(quick and dirty)
+
+1. In the `pom.xml` file, change the following lines:
+from
+```
+<additionalOption>-Xdoclint:html</additionalOption>
+<additionalOption>-Xdoclint:reference</additionalOption>
+```
+to 
+```
+<!--additionalOption>-Xdoclint:html</additionalOption-->
+<!--additionalOption>-Xdoclint:reference</additionalOption-->
+```
+.
+This disables potential errors with javadoc when packaging yamcs.
+
+**NOTE**: This is simply a _workaround_ for now. It is HIGHLY recomended to get the official release from [here](https://github.com/yamcs/yamcs).
+This is just a quick-and-dirty way of packaging yamcs.
+
+2. `mvn package -Drelease -DskipTests`
+
+3. `mkdir opt/yamcs`
+
+4. `tar -xzf distribution/target/yamcs-5.3.6-SNAPSHOT-linux-x86_64.tar.gz --strip-components=1 -C "/opt/yamcs"`
+
+Your tar file might look slightly different depending on YAMCS version you are using.
+
+That's it. YAMCS is installed inside your `/opt/yamcs`.
 
 ## Contributions
 
