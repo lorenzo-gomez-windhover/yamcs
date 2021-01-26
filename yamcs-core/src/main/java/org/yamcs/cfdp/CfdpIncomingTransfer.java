@@ -356,13 +356,17 @@ public class CfdpIncomingTransfer extends OngoingCfdpTransfer {
     private void onFileCompleted() {
         // verify checksum
         long expectedChecksum = eofPacket.getFileChecksum();
+        System.out.println("bucket-->" +  incomingBucket.getName());
         if (expectedChecksum == incomingDataFile.getChecksum()) {
             log.info("TXID{} file completed, checksum OK", cfdpTransactionId);
             if (needsFinish) {
+            	System.out.println("needsFinish#1");
                 finish(ConditionCode.NO_ERROR);
             } else {
+            	System.out.println("needsFinish#2");
                 complete(ConditionCode.NO_ERROR);
             }
+            System.out.println("needsFinish#3");
             saveFileInBucket(false, Collections.emptyList());
             sendInfoEvent(ETYPE_TRANSFER_FINISHED,
                     " downlink finished and saved in " + incomingBucket.getName() + "/" + getObjectName());
@@ -521,33 +525,46 @@ public class CfdpIncomingTransfer extends OngoingCfdpTransfer {
     }
 
     private void saveFileInBucket(boolean checksumError, List<SegmentRequest> missingSegments) {
+    	System.out.println("saveFileInBucket#1");
         try {
             Map<String, String> metadata = null;
             if (!missingSegments.isEmpty()) {
+            	System.out.println("saveFileInBucket#2");
+            	
                 metadata = new HashMap<>();
                 metadata.put("missingSegments", missingSegments.toString());
             }
+            System.out.println("saveFileInBucket#3");
             if (checksumError) {
                 if (metadata == null) {
                     metadata = new HashMap<>();
                 }
                 metadata.put("checksumError", "true");
             }
+            System.out.println("object name :"+ objectName );
             objectName = getFileName(objectName);
             incomingBucket.putObject(objectName, null, metadata, incomingDataFile.getData());
         } catch (IOException e) {
+        	System.out.println("saveFileInBucket#4");
             throw new RuntimeException("cannot save incoming file in bucket " + incomingBucket.getName(), e);
         }
     }
 
     private String getFileName(String name) throws IOException {
         name = name.replace("/", "_");
-        if (incomingBucket.getObject(name) == null) {
+        System.out.println("getFileName#1");
+        if (incomingBucket.findObject(name) == null) {
+        	System.out.println("getFileName#2");
             return name;
         }
+        /**
+         *@note Why are we hardcoding this number?
+         */
         for (int i = 1; i < 10000; i++) {
+        	
             String namei = name + "(" + i + ")";
             if (incomingBucket.getObject(namei) == null) {
+            	System.out.println("getFileName#3");
                 return namei;
             }
         }
