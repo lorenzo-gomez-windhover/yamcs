@@ -75,7 +75,7 @@ This is just a quick-and-dirty way of packaging yamcs.
     ```
 3. `mvn package -Drelease -DskipTests`
 
-4. `mkdir opt/yamcs`
+4. `mkdir /opt/yamcs`
 
 5. `tar -xzf distribution/target/yamcs-5.3.6-SNAPSHOT-linux-x86_64.tar.gz --strip-components=1 -C "/opt/yamcs"`
 
